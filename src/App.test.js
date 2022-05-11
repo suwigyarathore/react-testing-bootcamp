@@ -67,3 +67,22 @@ test("should render password and confirm password error", ()=>{
   let passwordErrorElement = screen.queryByText(/Password you enter is not the same/i);
   expect(passwordErrorElement).toBeInTheDocument();;
 })
+
+test("should render no error message if every input is valid", ()=>{
+  render(<App />);
+  const emailInput = screen.getByRole('textbox', { name: /email/i });
+  const passwordInput = screen.getByLabelText("Password");
+  const submitButton = screen.getByRole('button', { name: /submit/i });
+  const confirmPasswordInput = screen.getByLabelText(/confirm password/i);
+  userEvent.type(emailInput, 'suwi@gmail.com');
+  userEvent.type(passwordInput, '12345');
+  userEvent.type(confirmPasswordInput, '12345')
+  userEvent.click(submitButton);
+  let passwordErrorElement = screen.queryByText(/Password you enter is not the same/i);
+  let emailErrorElement = screen.queryByText(/Email you input is invalid/i);
+  let confirmPasswordErrorElement = screen.queryByText(/Password you enter is not the same/i);
+
+  expect(passwordErrorElement).not.toBeInTheDocument();
+  expect(emailErrorElement).not.toBeInTheDocument();
+  expect(confirmPasswordErrorElement).not.toBeInTheDocument();
+})
