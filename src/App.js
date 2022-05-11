@@ -22,6 +22,12 @@ function App() {
       return setError("Email you input is invalid");
     } else if (!validator.isLength(signUpInput.password, { min: 5 })) {
       return setError("Password you enter should have 5 or more characters");
+    } else if (
+      !validator.equals(signUpInput.password, signUpInput.confirmPassword)
+    ) {
+      return setError("Password you enter is not the same");
+    } else {
+      return setError(null);
     }
   };
   return (
